@@ -29,14 +29,9 @@ int main(void) {
     dp[0] = 1;
     for (int i = 1; i < n; i++) {
         dp[i] = 1;
-        if (paper[i - 1].second <= paper[i].second)
-            dp[i] = dp[i - 1] + 1;
-        else {
-            for (int j = 0; j < i - 1; j++) {
-                if (paper[j].second <= paper[i].second)
-                    // dp[i] = dp[j] + 1;
-                    dp[i] = max(dp[i], dp[j] + 1);
-            }
+        for (int j = 0; j < i; j++) {
+            if (paper[j].second <= paper[i].second)
+                dp[i] = max(dp[i], dp[j] + 1);
         }
         answer = max(answer, dp[i]);
     }

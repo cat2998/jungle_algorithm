@@ -1,34 +1,61 @@
 #include <iostream>
 #include <string>
-#include <map>
 using namespace std;
 
-bool compare(pair<char, int> a, pair<char, int> b) {
-    return a.second >= b.second;
+int answer = 0;
+bool alphabet[26] = {false};
+
+void permutation(string sentence[], int n, int start, int k) {
+    if (k == 0) {
+        int cnt = 0;
+        // for (int i = 0; i < 26; i++) {
+        //     cout << i << ": " << alphabet[i] << "\n";
+        // }
+        for (int i = 0; i < n; i++) {
+            int flag = 0;
+            for (int j = 0; j < sentence[i].size(); j++) {
+                if (!alphabet[sentence[i][j] - 'a']) {
+                    flag = 1;
+                    break;
+                }
+            }
+            if (flag == 0)
+                cnt++;
+        }
+        if (answer < cnt)
+            answer = cnt;
+    }
+    for (int i = start; i < 26; i++) {
+        if (!alphabet[i]) {
+            alphabet[i] = true;
+            permutation(sentence, n, i + 1, k - 1);
+            alphabet[i] = false;
+        }
+    }
 }
 
 int main(void) {
-    int n, k, answer = 0;
-    map<char, int> m;
+    int n, k;
 
     cin >> n >> k;
 
     string sentence[n];
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < n; i++)
         cin >> sentence[i];
-        for (int j = 4; j < sentence[i].size() - 4; j++) {
-            m[sentence[i][j]]++;
-        }
-    }
 
-    if (k <= 5) {
+    if (k < 5) {
         cout << answer;
         return 0;
     }
 
-    sort(m.begin(), m.end(), compare);
+    k -= 5;
+    alphabet['a' - 'a'] = true;
+    alphabet['n' - 'a'] = true;
+    alphabet['t' - 'a'] = true;
+    alphabet['i' - 'a'] = true;
+    alphabet['c' - 'a'] = true;
 
-    for (auto itr : m) {
-        cout << itr.first << ' ' << itr.second << "\n";
-    }
+    permutation(sentence, n, 0, k);
+
+    cout << answer;
 }

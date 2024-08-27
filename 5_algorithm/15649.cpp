@@ -1,25 +1,29 @@
 #include <iostream>
 using namespace std;
 
-void permutation(int n, int m, int visited[]) {
+int n, m;
+int answer[8];
+int visited[9] = {0};
+
+void permutation(int depth) {
+    if (depth == m) {
+        for (int i = 0; i < m; i++) {
+            cout << answer[i] << ' ';
+        }
+        cout << "\n";
+        return;
+    }
     for (int i = 1; i <= n; i++) {
-        visited[i] = 1;
-        for (int j = 1; j <= n; j++) {
-            if (visited[j] == 0) {
-                permutation
-            }
+        if (visited[i] == 0) {
+            answer[depth] = i;
+            visited[i] = 1;
+            permutation(depth + 1);
+            visited[i] = 0;
         }
     }
 }
 
 int main(void) {
-    int n, m;
-
     cin >> n >> m;
-
-    int visited[n + 1];
-    for (int i = 0; i < n + 1; i++)
-        visited[i] = 0;
-
-    permutation(n, m, visited);
+    permutation(0);
 }
